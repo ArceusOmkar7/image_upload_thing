@@ -50,7 +50,7 @@ function UploadComponent() {
           className="p-4"
         />
         <div className="card-actions">
-          <button className="btn btn-primary" onClick={handleFileUpload}>Upload</button>
+          <button className="btn btn-primary shadow-cyan-900" onClick={handleFileUpload}>Upload</button>
         </div>
       </div>
     </div>

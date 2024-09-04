@@ -8,7 +8,7 @@ const imageMetadataSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    filePath: {
+    gridFSFileId: {
       type: String,
       required: true,
     },
