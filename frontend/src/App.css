@@ -1,0 +1,135 @@
+body {
+    background: #0f0f0f;
+    color: #f0f0f0;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #333;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav a {
+    color: #f0f0f0;
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+.landing-page {
+    display: flex;
+    align-items: center;
+    height: 80vh;
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.upload-section {
+    flex: 0 0 60%;
+    background: #1a1a1a;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.info-section {
+    flex: 0 0 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    padding: 2rem;
+}
+
+.info-section h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.info-section p {
+    font-size: 1.25rem;
+    color: #ccc;
+}
+
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.file-input {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: #333;
+    color: #f0f0f0;
+    border: none;
+    border-radius: 0.25rem;
+    width: 100%;
+}
+
+.upload-button {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    color: #fff;
+    background: #007BFF;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.upload-button:hover {
+    background: #0056b3;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 2rem 0;
+}
+
+.card-item {
+    width: 300px;
+    background: #1a1a1a;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #333;
+    text-align: center;
+}
+
+.card-image {
+    width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+}
+
+.card-title {
+    margin-top: 0.5rem;
+    color: #f0f0f0;
+}
+
+.footer {
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid #333;
+}
+
+.footer a {
+    color: #007BFF;
+    text-decoration: none;
+}
