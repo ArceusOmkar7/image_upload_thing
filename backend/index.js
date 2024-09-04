@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const cors = require('cors');
-const ImageMetadata = require('./db');
+// const ImageMetadata = require('./db');
 const { GridFsStorage } = require('multer-gridfs-storage');
 // const { v4: primaryKey } = require('uuid');
 
@@ -22,7 +22,9 @@ const connectionURL = process.env.mongoURI + 'upload_thing';
 // console.log(connectionURL);
 mongoose.connect(connectionURL);
 const conn = mongoose.connection;
-const md = ImageMetadata;
+// const md = ImageMetadata;
+
+let gfs;
 
 conn.once('open', () => {
     console.log("CONNECTED TO DB");
@@ -43,6 +45,9 @@ const storage = new GridFsStorage({
         return {
             filename: `${Date.now()}-${file.originalname}`, // Unique filename
             bucketName: 'uploads', // Collection name in MongoDB for storing files
+            metadata: {
+                originalName: file.originalname,
+            }
         };
     }
 });
@@ -85,38 +90,55 @@ app.get('/', function (req, res) {
 // upload file endpoint
 app.post('/upload', upload.array('files', 10), async function (req, res) {
     if (!req.files || req.files.length === 0) {
-        throw new Error("No files uploaded.");
+        return res.status(400).json({ msg: "No files uploaded." });
     }
 
-    // console.log(req.files);
     try {
-        // create db model
-        const fileArr = req.files.map(file => {
-            // Log each file to see its properties
-            // console.log(file);
-            return {
-                fileName: file.originalname,
-                gridFSFileId: file.id,
-                mimeType: file.mimetype,
-                uploadedAt: Date.now(),
-                size: file.size,
-            };
-        });
-        // save db model
-        await md.insertMany(fileArr);
-        
         res.json({
             msg: "Uploaded!",
-            files: fileArr.map(f => f.fileName),
+            files: req.files.map(file => file.originalname),
         });
     } catch (error) {
-        console.error("Cannot save:", error);
-        res.status(400).json({
+        console.error("Upload Error:", error);
+        res.status(500).json({
             msg: "Couldn't upload",
             reason: error.message,
         });
     }
 });
+
+
+app.get('/download/:filename', async function (req, res) {
+    // Get the filename from the request parameters
+    const fileName = req.params.filename;
+
+    try {
+        // Find the file in the GridFS bucket
+        const file = await gfs.find({ metadata: {originalName: fileName} }).toArray();
+        
+        if (!file || file.length === 0) {
+            return res.status(404).json({ msg: "File not found" });
+        }
+
+        // Extract file info and create a readable stream
+        const fileInfo = file[0];
+        const downloadStream = gfs.openDownloadStream(fileInfo._id);
+        
+        if (!downloadStream) {
+            return res.status(404).json({ msg: "Cannot stream the file" });
+        }
+
+        // Set response headers and pipe the file stream to the response
+        res.set('Content-Type', fileInfo.contentType);
+        res.set('Content-Disposition', `attachment; filename=${fileInfo.filename}`);
+        downloadStream.pipe(res);
+
+    } catch (error) {
+        console.error("Error downloading file:", error);
+        res.status(500).json({ msg: "Internal server error", error: error.message });
+    }
+});
+
 
 
 app.listen(3000, () => {
