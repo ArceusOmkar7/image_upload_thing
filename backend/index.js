@@ -16,7 +16,7 @@ app.use(cors())
 
 /* ---------MONGODB SIDE INITIALISATION--------- */
 // MongoDB connection
-const connectionURL = process.env.mongoURI + 'upload_thing';
+const connectionURL = process.env.mongoURI;
 
 // console.log(connectionURL);
 mongoose.connect(connectionURL);
