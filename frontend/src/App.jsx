@@ -1,10 +1,37 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-import axios from "axios";
-import { CardItem } from "./CardItem";
+import './App.css';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { CardItem } from './CardItems';
 
 function App() {
-  return <UploadComponent />;
+  return (
+    <div className="app-container">
+      <header className="header">
+        <div className="logo">ImgThing</div>
+        <nav className="nav">
+          <a href="#upload">Upload</a>
+          <a href="#gallery">Gallery</a>
+        </nav>
+      </header>
+      <section className="landing-page">
+        <div className="upload-section">
+          <UploadComponent />
+        </div>
+        <div className="info-section">
+          <h1>Transfer Your Files [locally]</h1>
+          <p>Upload and manage your files with a sleek, user-friendly interface. Experience the future of file handling with minimal design and maximum efficiency.[localy]</p>
+        </div>
+      </section>
+      <section id="gallery" className="gallery-section">
+        <h2>Gallery</h2>
+        <CardContainer />
+      </section>
+      <footer className="footer">
+        <a href="https://github.com/ArceusOmkar7/image_upload_thing/issues/new" target='_blank'>Raise A issue</a>
+        <p>&copy; 2024 Image_thing_app.</p>
+      </footer>
+    </div>
+  );
 }
 
 function UploadComponent() {
@@ -17,7 +44,6 @@ function UploadComponent() {
   const handleFileUpload = async () => {
     const formData = new FormData();
 
-    // Append each file to FormData
     selectedFiles.forEach((file) => {
       formData.append("files", file);
     });
@@ -39,37 +65,17 @@ function UploadComponent() {
   };
 
   return (
-    <div>
-      {/* Upload part */}
-      <div className="card bg-base-100 w-8/12 shadow-xl flex flex-col">
-        <div className="card-body items-center text-center">
-          <h2 className="card-title">Upload Your Files</h2>
-          <ul className="flex gap-2">
-            {selectedFiles.map((file, index) => (
-              <li key={index}>{file.name}</li>
-            ))}
-          </ul>
-          <input
-            type="file"
-            multiple
-            required
-            onChange={handleFileChange}
-            className="p-4"
-          />
-          <div className="card-actions">
-            <button
-              className="btn btn-primary shadow-cyan-900"
-              onClick={handleFileUpload}
-            >
-              Upload
-            </button>
-          </div>
-        </div>
-
-      </div>
-      
-      {/* Images display part */}
-      <CardContainer></CardContainer>
+    <div className="upload-container">
+      <input
+        type="file"
+        multiple
+        required
+        onChange={handleFileChange}
+        className="file-input"
+      />
+      <button className="upload-button" onClick={handleFileUpload}>
+        Upload
+      </button>
     </div>
   );
 }
@@ -79,15 +85,12 @@ function CardContainer() {
 
   const fetchFiles = async () => {
     try {
-      console.log(cards)
-      // Fetch the list of files
       const response = await axios.get('http://localhost:3000/all');
-      const fileList = response.data; // Assuming response.data is the file metadata array
+      const fileList = response.data;
 
-      // Fetch each file and create a Blob URL
       const filePromises = fileList.map(async (file) => {
         const fileResponse = await axios.get(`http://localhost:3000/download/${file.metadata.originalName}`, {
-          responseType: 'blob' // Important for handling file data
+          responseType: 'blob'
         });
         const blob = new Blob([fileResponse.data], { type: file.contentType });
         const url = URL.createObjectURL(blob);
@@ -98,42 +101,28 @@ function CardContainer() {
         };
       });
 
-      // Wait for all file promises to resolve
       const filesWithUrls = await Promise.all(filePromises);
-
-      // Update the state with the files including their Blob URLs
       setCards(filesWithUrls);
-      console.log("Images fetched:",filesWithUrls.length);
     } catch (error) {
       console.error('Error fetching or processing files:', error);
     }
   };
 
   useEffect(() => {
-    // Fetch files on component mount
     fetchFiles();
 
-    // Set up interval to fetch files every 30 seconds
     const interval = setInterval(() => {
       fetchFiles();
     }, 30000);
 
-    // Clear interval on component unmount
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div style={{
-      display: "flex",
-      flexWrap: "wrap",
-      margin: "10px 0px",
-      gap: "10px"
-    }}>
-      {cards.map(card => <CardItem imageUrl={card.url} name={card.metadata.originalName} key={card._id}></CardItem>)}
+    <div className="card-container">
+      {cards.map(card => <CardItem imageUrl={card.url} name={card.metadata.originalName} key={card._id} />)}
     </div>
   );
 }
 
-// export default CardContainer;
-
-export default App
+export default App;
