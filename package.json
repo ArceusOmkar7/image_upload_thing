@@ -12,6 +12,5 @@
   "license": "ISC",
   "dependencies": {
     "concurrently": "^8.2.2",
-    "multer-gridfs-storage": "^5.0.2"
   }
 }
