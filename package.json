@@ -8,6 +8,10 @@
     "backend": "cd backend && npx nodemon index.js",
     "frontend": "cd frontend && npm run dev"
   },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

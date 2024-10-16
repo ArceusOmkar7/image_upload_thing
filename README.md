@@ -5,7 +5,10 @@ _Frontend currently only working with images_
 
 ## How to use
 
-Do `npm install` in frontend, backend and root folder
+Run 
+```bash
+npm install
+```
 
 Set enviroment variables in backend folder
 ```env
@@ -14,7 +17,7 @@ mongoURI={Your MongoDB URI}/{DB name}
 ```
 
 Run
-```cmd
+```bash
 npm run start
 ```
 
