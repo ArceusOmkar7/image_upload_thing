@@ -10,7 +10,7 @@ First install the dependencies
 npm install
 ```
 
-Set enviroment variables in backend folder
+Set enviroment variables
 ```env
 // Set your env variable
 mongoURI={Your MongoDB URI}/{DB name}
