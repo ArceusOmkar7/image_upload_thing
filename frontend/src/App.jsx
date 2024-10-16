@@ -50,7 +50,7 @@ function UploadComponent() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/upload",
+        "https://image-upload-thing-backend.vercel.app/upload",
         formData,
         {
           headers: {
@@ -85,11 +85,11 @@ function CardContainer() {
 
   const fetchFiles = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/all');
+      const response = await axios.get('https://image-upload-thing-backend.vercel.app/all');
       const fileList = response.data;
 
       const filePromises = fileList.map(async (file) => {
-        const fileResponse = await axios.get(`http://localhost:3000/download/${file.metadata.originalName}`, {
+        const fileResponse = await axios.get(`https://image-upload-thing-backend.vercel.app/download/${file.metadata.originalName}`, {
           responseType: 'blob'
         });
         const blob = new Blob([fileResponse.data], { type: file.contentType });
