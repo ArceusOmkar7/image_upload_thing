@@ -5,7 +5,7 @@ _Frontend currently only working with images_
 
 ## How to use
 
-Run 
+First install the dependencies
 ```bash
 npm install
 ```
@@ -16,7 +16,7 @@ Set enviroment variables in backend folder
 mongoURI={Your MongoDB URI}/{DB name}
 ```
 
-Run
+Run the App
 ```bash
 npm run start
 ```
