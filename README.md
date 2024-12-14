@@ -1,5 +1,5 @@
 # image-upload-thing
-This app lets you host a backend and upload things to it.
+This app lets you host a backend and upload things to it. It is made using ReactJS as frontend and ExpressJS as backend.
 
 _Frontend currently only working with images_
 
